@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DuetFour — four-bar live counter desk</title>
+  <meta name="description" content="Four live-instrument bars that answer your chords. Violin or trumpet counter so the loop finishes." />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<main>
+  <p class="eyebrow">WorkinWithAI · live chairs</p>
+  <h1>DuetFour</h1>
+  <p class="lead">Four-bar live counter desk. Loops talk to themselves. Session players write a short reply — violin third, trumpet call — against the chords you already have so the section has conversation and can finish. Live piano, upright, kit, violin, trumpet. Not a full solo. Not a call after a sung line. Not a hook motif.</p>
+  <p class="status" id="status">Tap to start audio…</p>
+  <div class="controls">
+    <label>BPM <input type="number" id="bpm" min="60" max="180" value="92" /></label>
+    <label>Key <select id="key"><option>A minor</option><option>C major</option><option>E major</option><option>D minor</option></select></label>
+    <label>Chords <input type="text" id="chords" value="Am F C G" /></label>
+    <label>Chair <select id="chair"><option value="violin">Violin</option><option value="trumpet">Trumpet</option></select></label>
+  </div>
+  <p class="eyebrow">Form · pocket 1–4 · counter on B</p>
+  <div class="bars" id="bars"></div>
+  <h2>Punch list</h2>
+  <pre id="punch"></pre>
+  <p class="note">iOS silent switch mutes Web Audio. Exports are 48 kHz 24-bit stereo WAV + MIDI. First downbeat at sample 0. Loop-folded tail.</p>
+</main>
+<div class="dock">
+  <button id="playA">A · Pocket (no counter)</button>
+  <button id="playB">B · With counter</button>
+  <button id="play4">4 · Counter only</button>
+  <button class="ghost" id="stop">Stop</button>
+  <button class="ghost" id="export">Export WAV + MIDI</button>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
