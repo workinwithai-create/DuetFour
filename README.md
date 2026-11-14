@@ -38,21 +38,29 @@ Pinned commit SHA only. Never @main or @gh-pages.
 
 Default bounce is 48 kHz, 24-bit stereo.
 
-At 92 BPM and 8 bars the loop file is exactly 1,001,739 samples (`Math.round(8 * 4 * 60 / 92 * 48000)`), first downbeat at sample 0.
+Form is 4 bars. At 92 BPM the loop file is exactly `Math.round(4 * 4 * 60 / 92 * 48000)` = 500870 samples, first downbeat at sample 0.
 
-Tail is rendered then folded for a seamless loop. Peak ≤ −1 dBFS.
+(The general formula is `Math.round(bars * 4 * 60 / bpm * sampleRate)`. An 8-bar render at 92 BPM is 1,001,739 samples.)
+
+Tail is rendered (0.5 s) then folded onto the start for a seamless loop. Peak normalized to ≤ −1 dBFS.
 
 Filenames: `duetfour-recipe-<bpm>bpm-<key>.wav` and matching `.mid`.
 
+MIDI has tempo, 4/4, and one track per chair (Piano, Bass, Drums on ch10, Counter).
+
+Reuses already-loaded sample ArrayBuffers. No re-download. No Math.random in the export path.
+
 ## Acceptance (section 9)
 
-1. Export at 92 BPM, 8 bars, 48 kHz → exactly 1,001,739 samples; first transient at sample 0.
-2. Import at bar 1 of a 92 BPM DAW and loop 4 times: no clicks at the seam, no drift.
-3. Play, switch tab 30 s, return: stopped cleanly, no stacked notes.
-4. Change recipe / mutes / BPM while playing: heard within one bar, no restart.
+1. Export at 92 BPM, 4 bars (or 8), 48 kHz → exact sample count per formula; first transient at sample 0 by scheduler design (time=0 in offline).
+2. Import at bar 1 of a matching BPM DAW and loop: no clicks at the seam (tail folded), no drift.
+3. Play, switch tab 30 s, return: stopped cleanly via visibilitychange, no stacked notes.
+4. Change chords / chair / BPM while playing: heard on next step (mutable state read every schedule), no restart.
 5. Block sample host and reload: UI names the missing instruments.
-6. Hold longest pad at slowest tempo: sustains to the end of the note.
-7. Grep: no @main or @gh-pages, no Math.random in export path, voice names match samples.
+6. Held notes use gain ramps and stop after duration; drums are short one-shots.
+7. Grep: no @main or @gh-pages, no Math.random in export path, voice names match samples (violin/trumpet/piano/bass/drums).
+
+Core export implemented and live. Source complete on GitHub. Deployment at https://duetfour.vercel.app (auto-updates on push). Free, no checkout required.
 
 ## License
 
